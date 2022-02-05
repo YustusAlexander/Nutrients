@@ -15,8 +15,6 @@ async def setup_bot_commands(bot: Bot):
         BotCommand(command="/del", description="удалить")
     ]
 
-    #await bot.set_my_commands(commands)
-
 
 async def on_shutdown(dp):
     await bot.close()
