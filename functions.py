@@ -1,10 +1,12 @@
 import openpyxl
 import re
-#path_to_full_file = 'usda_full.xlsx'
-path_to_file = 'usda_short.xlsx'
-wb = openpyxl.load_workbook(path_to_file)
-ws_db = wb["db"]
-ws_calc = wb["calc"]
+path_db_file = 'data/usda_full.xlsx'
+wb_db = openpyxl.load_workbook(path_db_file)
+ws_db = wb_db["db"]
+
+path_calc_file = 'data/list_for_result.xlsx'
+wb_calc = openpyxl.load_workbook(path_calc_file)
+ws_calc = wb_calc["calc"]
 
 ################################## show ############################################
 
@@ -17,15 +19,15 @@ def calculate():
     d = {}
     for i in range(1, ws_db.max_column + 1):
         val_sum_mas = 0
-        for j in range(3, ws_db.max_row + 1):  # сумма в столбце
-            if str(ws_calc.cell(row=j, column=i).value).isdigit():
-                val_sum_mas += float(ws_calc.cell(row=j, column=i).value)
-        if str(ws_calc.cell(row=1, column=i).value).isdigit():
+        if str(ws_calc.cell(row=1, column=i).value).isdigit():   # проверка наличия нормы
+            for j in range(3, ws_db.max_row + 1):  # сумма в столбце
+                if str(ws_calc.cell(row=j, column=i).value).isdigit():
+                    val_sum_mas += float(ws_calc.cell(row=j, column=i).value)
             val_norm = float(ws_calc.cell(row=1, column=i).value)
             val_percent = (val_sum_mas * 100) / val_norm
             name_percent = ws_calc.cell(row=2, column=i).value
             d[name_percent] = val_percent
-    wb.close()
+    wb_calc.close()
     return d
 
 def show_calculate(dict_calc):
@@ -66,8 +68,8 @@ def save_food(row, weight):
         else:
             val_calc = val_db  # Текстовое значение
         ws_calc.cell(row=row_write, column=i + 1).value = val_calc
-    wb.save(path_to_file)
-    wb.close()
+    wb_calc.save(path_calc_file)
+    wb_calc.close()
 
 
 
@@ -82,4 +84,4 @@ def show_del_food():
 def del_food(row_del):
     dispose = 2
     ws_calc.delete_rows(idx=row_del + dispose, amount=1)
-    wb.close()
+    wb_calc.close()

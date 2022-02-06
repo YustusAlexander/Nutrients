@@ -1,4 +1,3 @@
-import asyncio
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command, state
@@ -12,10 +11,8 @@ from functions import *
 
 @dp.message_handler(Command("show"))
 async def add_menu(message: types.Message):
-    await message.answer(f'Вес(гр) | Продукт')
-    await message.answer(show_food())
-    await message.answer("Cодержание нутриентов в суточном рационе:")
-    await message.answer(show_calculate(calculate()))
+    await message.answer(f'Вес(гр) | Продукт \n{show_food()}')
+    await message.answer(f"Cодержание нутриентов в суточном рационе: \n{show_calculate(calculate())}")
 
 
 ################################## add ############################################
