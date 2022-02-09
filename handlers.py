@@ -1,3 +1,4 @@
+import tqdm as tqdm
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters import Command, state
@@ -5,6 +6,35 @@ from aiogram.dispatcher.filters import Command, state
 from app import dp
 from states import *
 from functions import *
+
+################################## progressbar ############################################
+
+from tqdm import trange
+from time import sleep
+
+@dp.message_handler(Command("pb"))
+async def add_menu(message: types.Message):
+    t = trange(101, desc='Bar desc', leave=True)
+    for i in t:
+        t.set_description("Bar desc (file %i)" % i)
+        t.refresh()  # to show immediately the update
+        sleep(0.05)
+        await message.answer(f"{i}%")
+
+#----------------------------------
+# from time import sleep
+# from bob_telegram_tools.utils import TelegramTqdm
+# from bob_telegram_tools.bot import TelegramBot
+#
+# token = '<your_token>'
+# user_id = int('<your_chat_id>')
+# bot = TelegramBot(token, user_id)
+#
+# pb = TelegramTqdm(bot)
+# for i in pb(range(20)):
+#     sleep(1)
+
+
 
 ################################## show ############################################
 
